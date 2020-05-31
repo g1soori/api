@@ -11,10 +11,11 @@ resources:
 variables:
   # Container registry service connection established during pipeline creation
   dockerRegistryServiceConnection: '98511d28-f5bf-47f2-a94f-f1f09d355153'
-  imageRepository: 'gsooriapi'
+  imageRepository: 'hygieia-api'
   containerRegistry: 'g1sooricontainerreg.azurecr.io'
   dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
   tag: '$(Build.BuildId)'
+  imagePullSecret: 'g1sooricontainerreg7867794a-auth'#new line
   
   # Agent VM image name
   vmImageName: 'ubuntu-latest'
@@ -48,3 +49,6 @@ stages:
         containerRegistry: $(dockerRegistryServiceConnection)
         tags: |
           $(tag)
+
+    - upload: manifests
+      artifact: manifests
