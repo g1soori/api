@@ -31,44 +31,44 @@ variables:
   vmImageName: 'ubuntu-latest'
 
 stages:
-- stage: Build 
-  displayName: Build and push stage
-  jobs:  
-  - job: Build
-    displayName: Build
-    pool:
-      vmImage: $(vmImageName)
-    steps:
-    - checkout: self
-    - task: Maven@3
-      inputs:
-        mavenPomFile: 'pom.xml'
-        publishJUnitResults: true
-        testResultsFiles: '**/surefire-reports/TEST-*.xml'
-        javaHomeOption: 'JDKVersion'
-        mavenVersionOption: 'Default'
-        jdkVersionOption: '1.8'
-        mavenAuthenticateFeed: false
-        effectivePomSkip: false
-        sonarQubeRunAnalysis: false   
-        mavenDirectory: $(Build.SourcesDirectory)/api
-    - task: Docker@2
-      displayName: Build and push an image to container registry
-      inputs:
-        command: buildAndPush
-        repository: $(imageRepository)
-        dockerfile: $(dockerfilePath)
-        containerRegistry: $(dockerRegistryServiceConnection)
-        tags: |
-          $(tag)
+# - stage: Build 
+#   displayName: Build and push stage
+#   jobs:  
+#   - job: Build
+#     displayName: Build
+#     pool:
+#       vmImage: $(vmImageName)
+#     steps:
+#     - checkout: self
+#     - task: Maven@3
+#       inputs:
+#         mavenPomFile: 'pom.xml'
+#         publishJUnitResults: true
+#         testResultsFiles: '**/surefire-reports/TEST-*.xml'
+#         javaHomeOption: 'JDKVersion'
+#         mavenVersionOption: 'Default'
+#         jdkVersionOption: '1.8'
+#         mavenAuthenticateFeed: false
+#         effectivePomSkip: false
+#         sonarQubeRunAnalysis: false   
+#         mavenDirectory: $(Build.SourcesDirectory)/api
+#     - task: Docker@2
+#       displayName: Build and push an image to container registry
+#       inputs:
+#         command: buildAndPush
+#         repository: $(imageRepository)
+#         dockerfile: $(dockerfilePath)
+#         containerRegistry: $(dockerRegistryServiceConnection)
+#         tags: |
+#           $(tag)
 
 - stage: Deploy
   displayName: Deploy stage
-  dependsOn: Build
+#  dependsOn: Build
 
   jobs:
   - deployment: Deploy
-    condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
+#    condition: and(succeeded(), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/')))
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
@@ -90,8 +90,8 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Build.SourcesDirectory)/hygieia-k8s/hygieia-api-deploy.yaml
-                $(Build.SourcesDirectory)/hygieia-k8s/hygieia-api-svc.yaml
+                $(Build.SourcesDirectory)/hygieia-api-deploy.yaml
+                $(Build.SourcesDirectory)/hygieia-api-svc.yaml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
