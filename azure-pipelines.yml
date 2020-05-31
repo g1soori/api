@@ -5,8 +5,14 @@
 trigger:
 - master
 
+#resources:
+#- repo: self
+
 resources:
-- repo: self
+  repositories:
+  - repository: hygieiak8s
+    type: github
+    endpoint: github.com_g1soori
 
 variables:
   # Container registry service connection established during pipeline creation
@@ -29,6 +35,7 @@ stages:
     pool:
       vmImage: $(vmImageName)
     steps:
+    - checkout: self
     - task: Maven@3
       inputs:
         mavenPomFile: 'pom.xml'
@@ -50,5 +57,3 @@ stages:
         tags: |
           $(tag)
 
-    - upload: manifests
-      artifact: manifests
