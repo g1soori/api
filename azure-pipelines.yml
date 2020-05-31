@@ -10,7 +10,7 @@ trigger:
 
 resources:
   repositories:
-  - repository: hygieiak8s
+  - repository: self
     type: github
     endpoint: github.com_g1soori
 
