@@ -5,9 +5,6 @@
 trigger:
 - master
 
-#resources:
-#- repo: self
-
 resources:
   repositories:
   - repository: self
