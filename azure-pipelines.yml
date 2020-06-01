@@ -9,7 +9,7 @@ resources:
   repositories:
   - repository: self
     type: github
-    endpoint: github.com_g1soori
+    endpoint: g1soori
   - repository: k8smanifest
     type: github
     endpoint: g1soori
